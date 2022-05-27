@@ -1,6 +1,6 @@
 package com.example.springgraphql.repository;
 
-import com.example.springgraphqlmysql.model.Movie;
+import com.example.springgraphql.model.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
