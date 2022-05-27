@@ -1,0 +1,129 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+type Query {
+    getAllUsers: [User]
+    getAllRoles: [Role]
+    getAllMovies: [Movie]
+    getAllDirectors: [Director]
+    getUserById(id: ID!): User
+    getRoleById(id: ID!): Role
+    getMovieById(id: ID!): Movie
+    getDirectorById(id: ID!): Director
+}
+
+type Mutation {
+    createUser(input: UserInput!): User!
+    createRole(input: RoleInput!): Role!
+    createMovie(input: MovieInput!): Movie!
+    createDirector(input: DirectorInput!): Director!
+    updateUser(id:ID!, input: UpdateUserInput!): User!
+    updateMovie(id: ID!, input: UpdateMovieInput!): Movie!
+    updateDirector(id: ID!, input: UpdateDirectorInput!): Director!
+    deleteUser(id: ID!): String!
+    deleteMovie(id: ID!): String!
+    deleteDirector(id: ID!): String!
+    addRoleToUser(input: UsernameRoleNameInput!): String!
+    deleteRoleFromUser(input: UsernameRoleNameInput!): String!
+}
+
+input UsernameRoleNameInput {
+    username: String!
+    roleName: String!
+}
+
+input UserInput {
+    username: String!
+    password: String!
+}
+
+input RoleInput {
+    name: String!
+}
+
+input MovieInput {
+    title: String!
+    genres: String
+    runtime: String
+    certificate: Int
+    directorId: ID!
+    language: String
+    releaseDate: String
+}
+
+input DirectorInput {
+    firstName: String!
+    lastName: String!
+    birthDate: String
+}
+
+input UpdateUserInput {
+    password: String
+}
+
+input UpdateMovieInput {
+    genres: String
+    runtime: String
+    certificate: Int
+    language: String
+    releaseDate: String
+}
+
+input UpdateDirectorInput {
+    birthDate: String
+}
+
+type User {
+    id: ID!
+    username: String!
+    password: String!
+    roles: [Role]!
+}
+
+type Role {
+    id: ID!
+    name: String!
+    users: [User]
+}
+
+type Movie {
+    id: ID!
+    title: String!
+    genres: String
+    runtime: String
+    certificate: Int
+    director: Director!
+    language: String
+    releaseDate: String
+}
+
+type Director {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    birthDate: String
+    movies: [Movie]
+}
+
+query GetAllMovies {
+    getAllMovies {
+        title
+        director {
+            firstName
+            lastName
+        }
+    }
+}
+
+query GetAllDirectors {
+    getAllDirectors {
+        firstName
+        lastName
+        movies {
+            title
+            runtime
+        }
+    }
+}
+
