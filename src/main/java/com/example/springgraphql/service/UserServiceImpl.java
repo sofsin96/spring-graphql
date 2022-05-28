@@ -1,5 +1,6 @@
 package com.example.springgraphql.service;
 
+import com.example.springgraphql.exception.UserAlreadyExistsException;
 import com.example.springgraphql.model.Role;
 import com.example.springgraphql.model.User;
 import com.example.springgraphql.repository.RoleRepository;
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User createUser(User user) {
         if (userRepository.existsUserByUsername(user.getUsername())) {
-            throw new RuntimeException(user.getUsername() + " already exists in the database");
+            throw new UserAlreadyExistsException(user.getUsername());
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.addRole(roleRepository.findByName("USER"));

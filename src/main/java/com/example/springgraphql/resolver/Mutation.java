@@ -11,6 +11,7 @@ import com.example.springgraphql.service.RoleServiceImpl;
 import com.example.springgraphql.service.UserServiceImpl;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -57,6 +58,7 @@ public class Mutation implements GraphQLMutationResolver {
         return movieService.deleteMovie(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteDirector(Integer id) {
         return directorService.deleteDirector(id);
     }

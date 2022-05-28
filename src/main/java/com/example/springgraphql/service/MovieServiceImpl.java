@@ -1,5 +1,6 @@
 package com.example.springgraphql.service;
 
+import com.example.springgraphql.exception.MovieNotFoundException;
 import com.example.springgraphql.input.MovieInput;
 import com.example.springgraphql.model.Movie;
 import com.example.springgraphql.repository.MovieRepository;
@@ -21,7 +22,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie getMovieById(Integer id) {
-        return movieRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Movie with id " + id + " not found."));
+        return movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException(id));
     }
 
     @Override

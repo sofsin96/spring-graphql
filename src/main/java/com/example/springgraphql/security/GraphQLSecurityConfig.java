@@ -1,7 +1,7 @@
 package com.example.springgraphql.security;
 
 import com.example.springgraphql.filter.CustomAuthenticationFilter;
-import com.example.springgraphql.filter.CustomAuthorization;
+import com.example.springgraphql.filter.CustomAuthorizationFilter;
 import com.example.springgraphql.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -55,6 +55,6 @@ public class GraphQLSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
                 .addFilter(new CustomAuthenticationFilter(authenticationManagerBean()))
-                .addFilterBefore(new CustomAuthorization(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
