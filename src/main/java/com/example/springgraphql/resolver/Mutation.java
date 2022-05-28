@@ -37,6 +37,18 @@ public class Mutation implements GraphQLMutationResolver {
         return directorService.createDirector(new Director(input.getFirstName(), input.getLastName(), input.getBirthDate()));
     }
 
+    public User updateUser(Integer id, UserInput input) {
+        return userService.updateUser(id, input.getPassword());
+    }
+
+    public Movie updateMovie(Integer id, MovieInput input) {
+        return movieService.updateMovie(id, input);
+    }
+
+    public Director updateDirector(Integer id, DirectorInput input) {
+        return directorService.updateDirector(id, input.getBirthDate());
+    }
+
     public String deleteUser(Integer id) {
         return userService.deleteUser(id);
     }

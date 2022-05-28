@@ -4,7 +4,12 @@ import com.example.springgraphql.model.Role;
 import com.example.springgraphql.model.User;
 import com.example.springgraphql.repository.RoleRepository;
 import com.example.springgraphql.repository.UserRepository;
+import com.example.springgraphql.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +19,11 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
+    private final static String USER_NOT_FOUND_MSG = "User with username %s not found in the database.";
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getAllUsers() {
@@ -30,7 +37,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        if (userRepository.existsUserByUsername(user.getUsername())) {
+            throw new RuntimeException(user.getUsername() + " already exists in the database");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.addRole(roleRepository.findByName("USER"));
         return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(Integer id, String password) {
+        User foundUser = getUserById(id);
+
+        if (foundUser != null) {
+            foundUser.setPassword(passwordEncoder.encode(password));
+            userRepository.save(foundUser);
+        }
+        return foundUser;
     }
 
     @Override
@@ -65,5 +88,14 @@ public class UserServiceImpl implements UserService {
             user.removeRole(role);
             return "Role deleted.";
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, username));
+        }
+        return new UserPrincipal(user);
     }
 }

@@ -11,6 +11,8 @@ public interface UserService {
 
     User createUser(User user);
 
+    User updateUser(Integer id, String password);
+
     String deleteUser (Integer id);
 
     String addRoleToUser(String username, String roleName);

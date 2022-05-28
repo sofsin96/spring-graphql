@@ -10,11 +10,13 @@ import com.example.springgraphql.service.RoleServiceImpl;
 import com.example.springgraphql.service.UserServiceImpl;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 @Component
 public class Query implements GraphQLQueryResolver {
 

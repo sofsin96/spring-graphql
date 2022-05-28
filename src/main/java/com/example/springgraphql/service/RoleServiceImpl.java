@@ -26,7 +26,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role createRole(Role role) {
         if (roleRepository.existsRoleByName(role.getName())) {
-            throw new RuntimeException("Role with name " + role.getName() + " already exists.");
+            throw new RuntimeException("Role with name " + role.getName() + " already exists in the database.");
         }
         return roleRepository.save(role);
     }

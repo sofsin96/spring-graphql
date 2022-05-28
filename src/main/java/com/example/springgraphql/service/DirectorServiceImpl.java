@@ -26,6 +26,16 @@ public class DirectorServiceImpl implements DirectorService {
     public Director createDirector(Director director) {
         return directorRepository.save(director);
     }
+    @Override
+    public Director updateDirector(Integer id, String birthDate) {
+        Director foundDirector = getDirectorById(id);
+
+        if (foundDirector != null) {
+            foundDirector.setBirthDate(birthDate);
+            directorRepository.save(foundDirector);
+        }
+        return foundDirector;
+    }
 
     @Override
     public String deleteDirector(Integer id) {

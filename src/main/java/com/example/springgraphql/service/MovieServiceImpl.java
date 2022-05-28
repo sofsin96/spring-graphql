@@ -1,5 +1,6 @@
 package com.example.springgraphql.service;
 
+import com.example.springgraphql.input.MovieInput;
 import com.example.springgraphql.model.Movie;
 import com.example.springgraphql.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,21 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie createMovie(Movie movie) {
         return movieRepository.save(movie);
+    }
+
+    @Override
+    public Movie updateMovie(Integer id, MovieInput input) {
+        Movie foundMovie = getMovieById(id);
+
+        if (foundMovie != null) {
+            foundMovie.setGenres(input.getGenres());
+            foundMovie.setRuntime(input.getRuntime());
+            foundMovie.setCertificate(input.getCertificate());
+            foundMovie.setLanguage(input.getLanguage());
+            foundMovie.setReleaseDate(input.getReleaseDate());
+            movieRepository.save(foundMovie);
+        }
+        return foundMovie;
     }
 
     @Override

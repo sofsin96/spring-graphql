@@ -11,5 +11,7 @@ public interface DirectorService {
 
     Director createDirector(Director director);
 
+    Director updateDirector(Integer id, String birthDate);
+
     String deleteDirector (Integer id);
 }
