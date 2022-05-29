@@ -9,7 +9,7 @@ import java.util.List;
 public class MovieNotFoundException extends RuntimeException implements GraphQLError {
 
     public MovieNotFoundException(Integer id) {
-        super("Movie with " + id + " not found.");
+        super("Movie with id " + id + " not found.");
     }
 
     @Override
